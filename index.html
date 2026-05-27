@@ -1,466 +1,1019 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Atieh Esmaeili</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/w3.css">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-    body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
-    .w3-row-padding img {margin-bottom: 12px}
-    /* Set the width of the sidebar to 120px */
-    .w3-sidebar {width: 120px;background: #222;}
-    /* Add a left margin to the "page content" that matches the width of the sidebar (120px) */
-    
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Atieh Esmaeili — AI Engineer specializing in Multi-Agent Systems, Agentic RAG, and LangGraph. Based in Augsburg, Germany.">
+  <title>Ati. — AI Engineer</title>
 
-    /* The actual timeline (the vertical ruler) */
-    .timeline {
-      position: relative;
-      max-width: 1200px;
-      margin: 0 auto;
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Raleway:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* === VARIABLES & RESET === */
+    :root {
+      --bg:          #0a0a0a;
+      --bg2:         #111111;
+      --card:        #1a1a1a;
+      --card-hover:  #222222;
+      --accent:      #14b8a6;
+      --accent-dim:  rgba(20,184,166,0.12);
+      --accent-glow: rgba(20,184,166,0.28);
+      --t1:          #f0f0f0;
+      --t2:          #a0a0a0;
+      --t3:          #555;
+      --border:      rgba(255,255,255,0.07);
+      --sidebar:     80px;
+      --radius:      12px;
+      --ease:        0.25s ease;
     }
 
-    /* The actual timeline (the vertical ruler) */
-    .timeline::after {
-      content: '';
-      position: absolute;
-      width: 6px;
-      background-color: white;
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      margin-left: -3px;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--t1);
+      line-height: 1.7;
+      overflow-x: hidden;
     }
 
-    /* Container around content */
-    .container {
-      padding: 10px 40px;
-      position: relative;
-      background-color: inherit;
-      width: 50%;
+    a { color: var(--accent); text-decoration: none; transition: opacity var(--ease); }
+    a:hover { opacity: 0.75; }
+
+    /* === SIDEBAR === */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: var(--sidebar);
+      height: 100vh;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 0;
+      z-index: 200;
+      gap: 4px;
     }
 
-    /* The circles on the timeline */
-    .container::after {
-      content: '';
-      position: absolute;
-      width: 25px;
-      height: 25px;
-      right: -17px;
-      background-color: white;
-      border: 4px solid #FF9F55;
-      top: 15px;
-      border-radius: 50%;
-      z-index: 1;
+    .sidebar .brand {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-family: 'Raleway', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 28px;
     }
 
-    /* Place the container to the left */
-    .left {
-      left: 0;
-    }
-
-    /* Place the container to the right */
-    .right {
-      left: 50%;
-    }
-
-    /* Add arrows to the left container (pointing right) */
-    .left::before {
-      content: " ";
-      height: 0;
-      position: absolute;
-      top: 22px;
-      width: 0;
-      z-index: 1;
-      right: 30px;
-      border: medium solid white;
-      border-width: 10px 0 10px 10px;
-      border-color: transparent transparent transparent white;
-    }
-
-    /* Add arrows to the right container (pointing left) */
-    .right::before {
-      content: " ";
-      height: 0;
-      position: absolute;
-      top: 22px;
-      width: 0;
-      z-index: 1;
-      left: 30px;
-      border: medium solid white;
-      border-width: 10px 10px 10px 0;
-      border-color: transparent white transparent transparent;
-    }
-
-    /* Fix the circle for containers on the right side */
-    .right::after {
-      left: -16px;
-    }
-
-    /* The actual content */
-    .content {
-      padding: 20px 30px;
-      background-color: white;
-      position: relative;
-      border-radius: 6px;
-    }
-
-    .w3-sidebar a.nav-link.active {
-      background-color: black;
-      color: white;
-    }
-
-
-
-    /* Media queries - Responsive timeline on screens less than 600px wide */
-    @media screen and (max-width: 600px) {
-      /* Place the timelime to the left */
-      .timeline::after {
-      left: 31px;
-      }
-      
-      /* Full-width containers */
-      .container {
+    .sidebar nav {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
       width: 100%;
-      padding-left: 70px;
-      padding-right: 25px;
-      }
-      
-      /* Make sure that all arrows are pointing leftwards */
-      .container::before {
-      left: 60px;
-      border: medium solid white;
-      border-width: 10px 10px 10px 0;
-      border-color: transparent white transparent transparent;
-      }
-
-      /* Make sure all circles are at the same spot */
-      .left::after, .right::after {
-      left: 15px;
-      }
-      
-      /* Make all right containers behave like the left ones */
-      .right {
-      left: 0%;
-      }
+      align-items: center;
+      padding: 0 8px;
     }
-    #main {margin-left: 120px}
-    /* Remove margins from "page content" on small screens */
-    @media only screen and (max-width: 600px) {#main {margin-left: 0}}
-    </style>
-  </head>
-<body class="w3-black">
 
-<!-- Icon Bar (Sidebar - hidden on small screens) -->
-<nav class="w3-sidebar w3-bar-block w3-small w3-hide-small w3-center">
-  <!-- Avatar image in top left corner -->
-  <!--img src="images/img_4837.jpg" style="width:100%"-->
-  <a href="#" class="w3-bar-item w3-button w3-padding-large nav-link active" data-section="home">
-    <i class="fa fa-home w3-xxlarge"></i>
-    <p>HOME</p>
-  </a>
-  <a href="#about" class="w3-bar-item w3-button w3-padding-large nav-link" data-section="about">
-    <i class="fa fa-user w3-xxlarge"></i>
-    <p>ABOUT</p>
-  </a>
-  <a href="#contact" class="w3-bar-item w3-button w3-padding-large nav-link" data-section="contact">
-    <i class="fa fa-envelope w3-xxlarge"></i>
-    <p>CONTACT</p>
-  </a>
-  <a href="#certificate" class="w3-bar-item w3-button w3-padding-large nav-link" data-section="certificate">
-    <i class="fa fa-certificate w3-xxlarge"></i>
-    <p>CERTIFICATES</p>
-  </a>
+    .nav-item {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 11px 4px;
+      border-radius: 10px;
+      color: var(--t3);
+      font-size: 8.5px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all var(--ease);
+    }
+
+    .nav-item i { font-size: 17px; }
+
+    .nav-item:hover,
+    .nav-item.active {
+      color: var(--accent);
+      background: var(--accent-dim);
+      opacity: 1;
+    }
+
+    .sidebar .socials {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .sidebar .socials a {
+      color: var(--t3);
+      font-size: 15px;
+      transition: color var(--ease);
+    }
+
+    .sidebar .socials a:hover { color: var(--accent); opacity: 1; }
+
+    /* === LAYOUT === */
+    .main { margin-left: var(--sidebar); }
+
+    section {
+      padding: 96px 80px;
+      max-width: 1060px;
+    }
+
+    .sec-header { margin-bottom: 48px; }
+
+    .sec-header h2 {
+      font-family: 'Raleway', sans-serif;
+      font-size: clamp(26px, 3.5vw, 40px);
+      font-weight: 700;
+      color: var(--t1);
+      margin-bottom: 14px;
+    }
+
+    .divider {
+      width: 44px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    /* === HERO === */
+    #hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      padding: 0;
+      max-width: 100%;
+    }
+
+    #slideshow {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(10,10,10,0.88) 0%,
+        rgba(10,10,10,0.35) 55%,
+        rgba(10,10,10,0.65) 100%
+      );
+    }
+
+    .hero-body {
+      position: absolute;
+      bottom: 120px;
+      left: 80px;
+      max-width: 580px;
+    }
+
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .hero-body h1 {
+      font-family: 'Raleway', sans-serif;
+      font-size: clamp(44px, 6.5vw, 76px);
+      font-weight: 800;
+      line-height: 1.05;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.65);
+      font-weight: 300;
+      margin-bottom: 32px;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 26px;
+      background: var(--accent);
+      color: #0a0a0a;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.3px;
+      border: 2px solid var(--accent);
+      transition: all var(--ease);
+    }
+
+    .hero-cta:hover {
+      background: transparent;
+      color: var(--accent);
+      opacity: 1;
+    }
+
+    .hero-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 10px 80px;
+      background: rgba(0,0,0,0.55);
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.5);
+      backdrop-filter: blur(6px);
+    }
+
+    .slide-dots {
+      position: absolute;
+      bottom: 52px;
+      left: 80px;
+      display: flex;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .dot {
+      width: 22px;
+      height: 3px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.25);
+      transition: all 0.3s ease;
+    }
+
+    .dot.active {
+      background: var(--accent);
+      width: 34px;
+    }
+
+    /* === ABOUT === */
+    #about { border-bottom: 1px solid var(--border); }
+
+    .about-text p {
+      color: var(--t2);
+      font-size: 15.5px;
+      margin-bottom: 22px;
+    }
+
+    .about-text strong { color: var(--t1); }
+
+    .highlights {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 14px;
+      margin-top: 40px;
+    }
+
+    .hl-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: all var(--ease);
+    }
+
+    .hl-card:hover {
+      border-color: var(--accent);
+      background: var(--card-hover);
+    }
+
+    .hl-card i {
+      color: var(--accent);
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .hl-card h4 {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--t1);
+      margin-bottom: 5px;
+    }
+
+    .hl-card p { font-size: 12.5px; color: var(--t2); margin: 0; }
+
+    /* === SKILLS === */
+    #skills { border-bottom: 1px solid var(--border); }
+
+    .skills-grid { display: flex; flex-direction: column; gap: 30px; }
+
+    .skill-cat h3 {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--t3);
+      margin-bottom: 14px;
+    }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 9px; }
+
+    .tag {
+      padding: 7px 15px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--t2);
+      transition: all var(--ease);
+      cursor: default;
+    }
+
+    .tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    /* === TIMELINE === */
+    #timeline { border-bottom: 1px solid var(--border); }
+
+    .tl {
+      position: relative;
+      padding-left: 28px;
+    }
+
+    .tl::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 8px; bottom: 8px;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .tl-item {
+      position: relative;
+      margin-bottom: 44px;
+    }
+
+    .tl-item:last-child { margin-bottom: 0; }
+
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -34px;
+      top: 7px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .tl-year {
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .tl-content h3 {
+      font-family: 'Raleway', sans-serif;
+      font-size: 16.5px;
+      font-weight: 600;
+      color: var(--t1);
+      margin-bottom: 5px;
+    }
+
+    .tl-content p { font-size: 14px; color: var(--t2); line-height: 1.7; }
+
+    /* === CERTIFICATES === */
+    #certificates { border-bottom: 1px solid var(--border); }
+
+    .cert-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .cert-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 15px 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--t2);
+      font-size: 14px;
+      transition: all var(--ease);
+    }
+
+    .cert-item:hover {
+      border-color: var(--accent);
+      color: var(--t1);
+      background: var(--card-hover);
+      opacity: 1;
+    }
+
+    .cert-item > i:first-child {
+      color: var(--accent);
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .cert-arrow {
+      margin-left: auto;
+      color: var(--t3);
+      font-size: 11px;
+      transition: transform var(--ease);
+    }
+
+    .cert-item:hover .cert-arrow {
+      transform: translateX(4px);
+      color: var(--accent);
+    }
+
+    /* === CONTACT === */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .contact-details { display: flex; flex-direction: column; gap: 18px; }
+
+    .c-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--t2);
+    }
+
+    .c-icon {
+      width: 42px;
+      height: 42px;
+      background: var(--accent-dim);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .c-text strong {
+      display: block;
+      font-size: 13.5px;
+      color: var(--t1);
+      margin-bottom: 2px;
+    }
+
+    .c-text span, .c-text a {
+      font-size: 13.5px;
+      color: var(--t2);
+    }
+
+    .connect-box {
+      padding: 26px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 14.5px;
+      color: var(--t2);
+      line-height: 1.8;
+    }
+
+    .connect-box strong { color: var(--t1); }
+
+    /* === FOOTER === */
+    footer {
+      padding: 28px 80px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .footer-name {
+      font-family: 'Raleway', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--t3);
+    }
+
+    .footer-name span { color: var(--accent); }
+
+    .footer-links { display: flex; gap: 20px; }
+
+    .footer-links a {
+      color: var(--t3);
+      font-size: 17px;
+      transition: color var(--ease);
+    }
+
+    .footer-links a:hover { color: var(--accent); opacity: 1; }
+
+    /* === MOBILE NAV === */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      z-index: 200;
+      padding: 6px 0;
+    }
+
+    .mob-inner {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .mob-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 5px 10px;
+      color: var(--t3);
+      font-size: 8.5px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: color var(--ease);
+    }
+
+    .mob-item i { font-size: 17px; }
+
+    .mob-item.active,
+    .mob-item:hover { color: var(--accent); opacity: 1; }
+
+    /* === FADE-IN === */
+    .fi {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .fi.on { opacity: 1; transform: translateY(0); }
+    .fi:nth-child(2) { transition-delay: 0.08s; }
+    .fi:nth-child(3) { transition-delay: 0.16s; }
+    .fi:nth-child(4) { transition-delay: 0.24s; }
+    .fi:nth-child(5) { transition-delay: 0.32s; }
+    .fi:nth-child(6) { transition-delay: 0.40s; }
+    .fi:nth-child(7) { transition-delay: 0.48s; }
+    .fi:nth-child(8) { transition-delay: 0.56s; }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      :root { --sidebar: 0px; }
+
+      .sidebar { display: none; }
+      .mobile-nav { display: block; }
+
+      .main { margin-left: 0; margin-bottom: 68px; }
+
+      section { padding: 64px 22px; }
+
+      .hero-body { left: 22px; right: 22px; bottom: 90px; }
+      .hero-caption { padding: 10px 22px; }
+      .slide-dots { left: 22px; }
+
+      .contact-grid { grid-template-columns: 1fr; }
+
+      footer { padding: 22px; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar">
+  <div class="brand">Ati</div>
+  <nav>
+    <a href="#hero" class="nav-item active" data-s="hero">
+      <i class="fas fa-house"></i><span>Home</span>
+    </a>
+    <a href="#about" class="nav-item" data-s="about">
+      <i class="fas fa-user"></i><span>About</span>
+    </a>
+    <a href="#skills" class="nav-item" data-s="skills">
+      <i class="fas fa-code"></i><span>Skills</span>
+    </a>
+    <a href="#timeline" class="nav-item" data-s="timeline">
+      <i class="fas fa-clock-rotate-left"></i><span>Career</span>
+    </a>
+    <a href="#certificates" class="nav-item" data-s="certificates">
+      <i class="fas fa-certificate"></i><span>Certs</span>
+    </a>
+    <a href="#contact" class="nav-item" data-s="contact">
+      <i class="fas fa-envelope"></i><span>Contact</span>
+    </a>
+  </nav>
+  <div class="socials">
+    <a href="https://github.com/atiesmaeili" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+    <a href="https://www.linkedin.com/in/atieh-mohammadesmaeili/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+  </div>
+</aside>
+
+<!-- ===== MOBILE NAV ===== -->
+<nav class="mobile-nav">
+  <div class="mob-inner">
+    <a href="#hero"         class="mob-item active"><i class="fas fa-house"></i><span>Home</span></a>
+    <a href="#about"        class="mob-item"><i class="fas fa-user"></i><span>About</span></a>
+    <a href="#skills"       class="mob-item"><i class="fas fa-code"></i><span>Skills</span></a>
+    <a href="#timeline"     class="mob-item"><i class="fas fa-clock-rotate-left"></i><span>Career</span></a>
+    <a href="#certificates" class="mob-item"><i class="fas fa-certificate"></i><span>Certs</span></a>
+    <a href="#contact"      class="mob-item"><i class="fas fa-envelope"></i><span>Contact</span></a>
+  </div>
 </nav>
 
-<!-- Navbar on small screens (Hidden on medium and large screens) -->
-<div class="w3-top w3-hide-large w3-hide-medium" id="myNavbar">
-  <div class="w3-bar w3-black w3-opacity w3-hover-opacity-off w3-center w3-small">
-    <a href="#" class="w3-bar-item w3-button" style="width:25% !important">HOME</a>
-    <a href="#about" class="w3-bar-item w3-button" style="width:25% !important">ABOUT</a>
-    <a href="#photos" class="w3-bar-item w3-button" style="width:25% !important">PHOTOS</a>
-    <a href="#contact" class="w3-bar-item w3-button" style="width:25% !important">CONTACT</a>
+<!-- ===== MAIN ===== -->
+<main class="main">
+
+  <!-- HERO -->
+  <section id="hero">
+    <img id="slideshow" src="IMG_0950.jpg" alt="Atieh Esmaeili" loading="eager">
+    <div class="hero-overlay"></div>
+
+    <div class="hero-body">
+      <p class="hero-eyebrow">AI Engineer &middot; Augsburg, Germany</p>
+      <h1>Ati.</h1>
+      <p class="hero-sub">Building intelligent systems with Multi-Agent AI, Agentic RAG &amp; LangGraph</p>
+      <a href="#about" class="hero-cta">
+        <i class="fas fa-arrow-down"></i> Explore my work
+      </a>
+    </div>
+
+    <div class="slide-dots" id="slide-dots"></div>
+    <div class="hero-caption" id="hero-caption">Rosenmobtag @ BBZ &ndash; Augsburg &ndash; February 2026</div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="sec-header fi">
+      <h2>About Me</h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="about-text">
+      <p class="fi">
+        <strong>My Philosophy</strong><br>
+        For me, a career is much more than ticking off tasks or earning a paycheck — it represents eight hours of my daily life.
+        I believe that community, empathy, and mutual respect are the pillars of a great workplace. I thrive on connection:
+        whether we are brainstorming complex technical solutions or sharing a quick chat about our day, these interactions
+        fuel my creativity and fuel my soul.
+      </p>
+      <p class="fi">
+        <strong>My Story</strong><br>
+        Since childhood I have been driven by an insatiable curiosity and a habit of choosing the most difficult route.
+        This drive led me to pack my entire life into two suitcases and move to Germany to pursue the cutting edge of technology.
+        Being an AI Engineer in a foreign land has allowed me to grow within an international community, master a new language,
+        and build a future defined by continuous learning.
+      </p>
+      <p class="fi">
+        I am deeply immersed in the world of Agentic AI — building <strong>Multi-Agent Systems</strong>,
+        <strong>Agentic RAG</strong>, and advanced workflows using the <strong>LangGraph</strong> framework,
+        with autonomous AI agents designed to solve real-world complexities.
+      </p>
+    </div>
+
+    <div class="highlights">
+      <div class="hl-card fi">
+        <i class="fas fa-robot"></i>
+        <h4>Agentic AI</h4>
+        <p>Designing autonomous multi-agent systems for real-world tasks</p>
+      </div>
+      <div class="hl-card fi">
+        <i class="fas fa-flask"></i>
+        <h4>Research-driven</h4>
+        <p>Staying ahead by reading the latest AI research papers</p>
+      </div>
+      <div class="hl-card fi">
+        <i class="fas fa-users"></i>
+        <h4>Community first</h4>
+        <p>Firm believer that great teams build great products</p>
+      </div>
+      <div class="hl-card fi">
+        <i class="fas fa-globe"></i>
+        <h4>International</h4>
+        <p>Multilingual professional working across cultures</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="sec-header fi">
+      <h2>Skills &amp; Tech Stack</h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="skills-grid">
+      <div class="skill-cat fi">
+        <h3>AI / ML</h3>
+        <div class="tags">
+          <span class="tag">Multi-Agent Systems</span>
+          <span class="tag">Agentic RAG</span>
+          <span class="tag">LangGraph</span>
+          <span class="tag">LangChain</span>
+          <span class="tag">LLMs</span>
+          <span class="tag">Vector Databases</span>
+          <span class="tag">TensorFlow</span>
+          <span class="tag">Prompt Engineering</span>
+          <span class="tag">Time Series Analysis</span>
+        </div>
+      </div>
+      <div class="skill-cat fi">
+        <h3>Engineering &amp; Tools</h3>
+        <div class="tags">
+          <span class="tag">Python</span>
+          <span class="tag">Docker</span>
+          <span class="tag">Microservices</span>
+          <span class="tag">REST APIs</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">SQL</span>
+          <span class="tag">Git</span>
+        </div>
+      </div>
+      <div class="skill-cat fi">
+        <h3>Domains</h3>
+        <div class="tags">
+          <span class="tag">Software Development</span>
+          <span class="tag">Business Analysis</span>
+          <span class="tag">Technical Consulting</span>
+          <span class="tag">EdTech</span>
+          <span class="tag">Pharma Tech</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section id="timeline">
+    <div class="sec-header fi">
+      <h2>Career Timeline</h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="tl">
+
+      <div class="tl-item fi">
+        <div class="tl-year">September 2024 &ndash; Present</div>
+        <div class="tl-content">
+          <h3>AI Engineer &middot; BBZ Augsburg</h3>
+          <p>Joined BBZ Augsburg to build Agentic AI workflows, Multi-Agent Systems, and advanced LangGraph-based pipelines.</p>
+          <p>Continuing to architect and scale AI solutions. Pursuing Master's thesis research. Deepening German language proficiency every day.</p>
+        </div>
+      </div>
+
+      <div class="tl-item fi">
+        <div class="tl-year">June &ndash; September 2024</div>
+        <div class="tl-content">
+          <h3>Student Developer &middot; B1SmartTV, Munich</h3>
+          <p>Student placement contributing to smart TV platform development.</p>
+        </div>
+      </div>
+
+      <div class="tl-item fi">
+        <div class="tl-year">2023</div>
+        <div class="tl-content">
+          <h3>Student Business Analyst &middot; K&ouml;rber Pharma, Bavaria</h3>
+          <p>Worked as a Student Business Analyst at K&ouml;rber Pharma while pursuing the Master's degree at the University of Passau.</p>
+        </div>
+      </div>
+
+      <div class="tl-item fi">
+        <div class="tl-year">2022</div>
+        <div class="tl-content">
+          <h3>M.Sc. Artificial Intelligence &middot; University of Passau, Germany</h3>
+          <p>Immigrated to Germany and enrolled in the M.Sc. program in Artificial Intelligence.</p>
+        </div>
+      </div>
+
+      <div class="tl-item fi">
+        <div class="tl-year">2019 &ndash; 2022</div>
+        <div class="tl-content">
+          <h3>Software Developer &middot; Behsazan Mellat, Tehran</h3>
+          <p>Completed M.Sc. in Computer Science at the University of Raja, Qazvin, and worked as a Software Developer.</p>
+        </div>
+      </div>
+
+      <div class="tl-item fi">
+        <div class="tl-year">2017 &ndash; 2019</div>
+        <div class="tl-content">
+          <h3>Software Developer &middot; Gam Electronics, Tehran</h3>
+          <p>Worked as a Software Developer while completing the Master's degree in Computer Science.</p>
+        </div>
+      </div>
+
+      <div class="tl-item fi">
+        <div class="tl-year">2016 &ndash; 2017</div>
+        <div class="tl-content">
+          <h3>Business Analyst &middot; ISTG, Tehran</h3>
+          <p>Started M.Sc. in Computer Science at the University of Raja and worked as a Business Analyst at ISTG.</p>
+        </div>
+      </div>
+
+      <div class="tl-item fi">
+        <div class="tl-year">2014</div>
+        <div class="tl-content">
+          <h3>B.Sc. Informatics &middot; Islamic Azad University, Tehran</h3>
+          <p>Completed Bachelor's in Informatics (Computer Science) and began working as a Business Analyst at ISTG.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CERTIFICATES -->
+  <section id="certificates">
+    <div class="sec-header fi">
+      <h2>Certificates</h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="cert-list">
+      <a class="cert-item fi" href="https://www.linkedin.com/learning/certificates/eaf6b3f31bc63b4c98cc0fd2258abd7e5c3b8dadf6f6f75517dd65f6c39d174a" target="_blank">
+        <i class="fas fa-award"></i>
+        <span>Microservices Foundation &middot; LinkedIn Learning</span>
+        <i class="fas fa-arrow-right cert-arrow"></i>
+      </a>
+      <a class="cert-item fi" href="https://www.linkedin.com/learning/certificates/713ac458c30c006caab111b378c3d420131ce72c23b5e1efc72e1725692dc76e" target="_blank">
+        <i class="fas fa-award"></i>
+        <span>Introduction to Web Design and Development &middot; LinkedIn Learning</span>
+        <i class="fas fa-arrow-right cert-arrow"></i>
+      </a>
+      <a class="cert-item fi" href="https://www.linkedin.com/learning/certificates/b63fa0ec5d599cffb50b757a5fb1abc6bbbef1d85fc3a66d2d28d36098f8b921" target="_blank">
+        <i class="fas fa-award"></i>
+        <span>JavaScript: Patterns &middot; LinkedIn Learning</span>
+        <i class="fas fa-arrow-right cert-arrow"></i>
+      </a>
+      <a class="cert-item fi" href="https://www.linkedin.com/learning/certificates/f5b238e3d9c1dbd0df8e7090e79823714b9f9917c097374e740891af696833d9" target="_blank">
+        <i class="fas fa-award"></i>
+        <span>JavaScript Essential Training &middot; LinkedIn Learning</span>
+        <i class="fas fa-arrow-right cert-arrow"></i>
+      </a>
+      <a class="cert-item fi" href="https://www.linkedin.com/learning/certificates/5ae0c433aea04ad1c54cbec3a84c063d93fa1431952701f2caed2fd95c36c582" target="_blank">
+        <i class="fas fa-award"></i>
+        <span>Docker for Developers &middot; LinkedIn Learning</span>
+        <i class="fas fa-arrow-right cert-arrow"></i>
+      </a>
+      <a class="cert-item fi" href="https://www.linkedin.com/learning/certificates/d324a9d7a5dadf62f0a6937ce7807ba95091693e5deb881e009f25eed71cb55e" target="_blank">
+        <i class="fas fa-award"></i>
+        <span>TensorFlow: Working with Images &middot; LinkedIn Learning</span>
+        <i class="fas fa-arrow-right cert-arrow"></i>
+      </a>
+      <a class="cert-item fi" href="https://www.linkedin.com/learning/certificates/be12904436f888944fec0e40874f06fa59124e16383652512121e274cd146a4b" target="_blank">
+        <i class="fas fa-award"></i>
+        <span>Time Series Analysis and Forecasting with GPT-4o &middot; LinkedIn Learning</span>
+        <i class="fas fa-arrow-right cert-arrow"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="sec-header fi">
+      <h2>Get in Touch</h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-details">
+        <div class="c-row fi">
+          <div class="c-icon"><i class="fas fa-location-dot"></i></div>
+          <div class="c-text">
+            <strong>Location</strong>
+            <span>Augsburg, Germany</span>
+          </div>
+        </div>
+        <div class="c-row fi">
+          <div class="c-icon"><i class="fas fa-envelope"></i></div>
+          <div class="c-text">
+            <strong>Email</strong>
+            <a href="mailto:esmaeili.atie@gmail.com">esmaeili.atie@gmail.com</a>
+          </div>
+        </div>
+        <div class="c-row fi">
+          <div class="c-icon"><i class="fab fa-linkedin"></i></div>
+          <div class="c-text">
+            <strong>LinkedIn</strong>
+            <a href="https://www.linkedin.com/in/atieh-mohammadesmaeili/" target="_blank">atieh-mohammadesmaeili</a>
+          </div>
+        </div>
+        <div class="c-row fi">
+          <div class="c-icon"><i class="fab fa-github"></i></div>
+          <div class="c-text">
+            <strong>GitHub</strong>
+            <a href="https://github.com/atiesmaeili" target="_blank">atiesmaeili</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="connect-box fi">
+        <strong>Open to collaborations</strong><br><br>
+        I'm always interested in connecting with fellow engineers, researchers, and teams working on impactful AI challenges.
+        Whether you have a project idea, a job opportunity, or simply want to talk about Agentic AI — feel free to reach out.
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-name">Atieh <span>Esmaeili</span></div>
+  <div class="footer-links">
+    <a href="https://github.com/atiesmaeili" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+    <a href="https://www.linkedin.com/in/atieh-mohammadesmaeili/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+    <a href="mailto:esmaeili.atie@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
   </div>
-</div>
-
-<!-- Page Content -->
-<div class="w3-padding-large" id="main">
-  <!-- Header/Home -->
-  <header class="w3-container w3-padding-32 w3-center w3-black" id="home">
-    
-    <div style="position:relative;">
-      <img id="slideshow" src="IMG_0950.jpg" alt="Ati" class="w3-image" width="1400" height="800">
-      <div id="slideshow-caption" class="w3-display-bottommiddle w3-container w3-text-white w3-padding-16 w3-black w3-opacity" style="width:100%">
-      Rosenmobtag @ BBZ - Augsburg - February 2026 </div>
-    </div>
-
-    <!--h1 class="w3-jumbo"><span class="w3-hide-small">I'm</span> Ati.</h1>
-    <p>AI Engineer <a href="https://www.linkedin.com/company/berufsbildungszentrum-augsburg-bbz/mycompany/">@BBZ</a></p-->
-  </header>
-
-  <!-- About Section -->
-  <div class="w3-content w3-justify w3-text-white w3-padding-64" id="about">
-    <h2 class="w3-text-light-grey">About Me</h2>
-    <hr style="width:200px" class="w3-opacity">
-    <p>
-      <b>My Philosophy:</b><br>
-      For me, a career is much more than just ticking off tasks or earning a paycheck; it represents eight hours of my daily life. I believe that community, empathy, and mutual respect are the pillars of a great workplace. While many developers prefer to work in isolation, I thrive on connection. Whether we are brainstorming complex technical solutions or sharing a small chit-chat about our day, these interactions are what fulfill my soul and fuel my creativity.
-      I enjoy to be in a team that values honesty and growth as much as I do, a place where we don't just work together, but where we support each other through mistakes and celebrate our wins as a community.
-      <br>
-      <b>My Story:</b><br>
-      Since childhood, I have been driven by an insatiable curiosity and a habit of choosing the most difficult route. This drive led me to pack my entire life into two suitcases and move to Germany to pursue the cutting edge of technology. Being an AI Engineer in a foreign land is a challenge I embraced wholeheartedly, it has allowed me to grow within an international community, master a new language, and build a future defined by continuous learning.
-      
-      I am deeply immersed in the world of Agentic AI. Specifically, I am building:<br>
-      
-      Multi-Agent Systems and Agentic RAG.<br>
-      
-      Advanced workflows using the LangGraph framework.<br>
-      
-      Autonomous AI agents designed to solve real-world complexities.<br>
-
-      When I’m not architecting Multi-Agent Systems, you’ll find me:<br>
-      
-      Exploring: Reading the latest research articles to stay ahead in the AI field.<br>
-      
-      Creating: Experimenting with a new cake recipe or a savory dish in the kitchen.<br>
-      
-      Connecting: Spending quality time with family, friends, and nature.<br>
-      
-  
-  
-  <!-- timeline Section -->
-<div class="w3-content w3-justify w3-text-white w3-padding-64" id="about">
-  <h2 class="w3-text-light-grey">My Career Timeline</h2>
-  <hr style="width:300px" class="w3-opacity">
-  <div class="timeline">
-    
-    <div class="container left">
-      <div class="content w3-text-gray">
-        <h2>2025</h2>
-        <p>
-          I have been working as an AI Engineer at BBZ Augsburg.
-          Pursued my Master's thesis.
-          I'm learning and improving my German every single day.
-        </p>
-      </div>
-    </div>
-    
-    <div class="container right">
-      <div class="content w3-text-gray">
-        <h2>2024</h2>
-        <p>
-          Student job at <a href="https://www.linkedin.com/company/b1smarttv/posts/?feedView=all">B1SmartTV</a> 
-          from June to September 2024.<br>
-          Since September 2024, I have been working as an AI Engineer at BBZ Augsburg.
-        </p>
-      </div>
-    </div>
-    
-    <div class="container left">
-      <div class="content w3-text-gray">
-        <h2>2023</h2>
-        <p>
-          Pursuing my Master's degree.<br>
-          Started working as a Student Business Analyst at Körber Pharma Co., Bavaria, Germany.
-        </p>
-      </div>
-    </div>
-    
-    <div class="container right w3-text-gray">
-      <div class="content">
-        <h2>2022</h2>
-        <p>
-          Enrolled in the M.Sc. program in Artificial Intelligence at the University of Passau, Germany.<br>
-          Immigrated to Germany.
-        </p>
-      </div>
-    </div>
-    
-    <div class="container left w3-text-gray">
-      <div class="content">
-        <h2>2019</h2>
-        <p>
-          Completed M.Sc. in Computer Science at the University of Raja, Qazvin, Iran.<br>
-          Began working as a Software Developer at Behsazan Mellat, Tehran, Iran.
-        </p>
-      </div>
-    </div>
-    
-    <div class="container right w3-text-gray">
-      <div class="content">
-        <h2>2017</h2>
-        <p>
-          Pursuing my Master's degree.<br>
-          Started working as a Software Developer at Gam Electronics.
-        </p>
-      </div>
-    </div>
-    
-    <div class="container left w3-text-gray">
-      <div class="content">
-        <h2>2016</h2>
-        <p>
-          Started M.Sc. in Computer Science at the University of Raja, Qazvin, Iran.<br>
-          Worked as a Business Analyst at ISTG, Tehran, Iran.
-        </p>
-      </div>
-    </div>
-    
-    <div class="container right w3-text-gray">
-      <div class="content">
-        <h2>2014</h2>
-        <p>
-          Completed B.Sc. in Informatics (Computer Science) at Islamic Azad University, Tehran, Iran.<br>
-          Began working as a Business Analyst at ISTG, Tehran, Iran.
-        </p>
-      </div>
-    </div>
-    
-  </div>
-</div>
-
-
-  <!-- Contact Section -->
-  <div class="w3-padding-64 w3-content w3-text-grey" id="contact">
-    <h2 class="w3-text-light-grey">Contact Me</h2>
-    <hr style="width:200px" class="w3-opacity">
-
-    <div class="w3-section">
-      <p><i class="fa fa-map-marker fa-fw w3-text-white w3-xxlarge w3-margin-right"></i> Augsburg, Germany</p>
-      <p><i class="fa fa-envelope fa-fw w3-text-white w3-xxlarge w3-margin-right"> </i> Email: esmaeili.atie@gmail.com</p>
-    </div><br>
-    
-  </div>
-
-  <div class="w3-padding-64 w3-content w3-text-grey" id="certificate">
-    <h2 class="w3-text-light-grey">Certificates</h2>
-    <hr style="width:200px" class="w3-opacity">
-    <p>
-      <i class="fa fa-certificate w3-margin-right"></i>
-      <a href="https://www.linkedin.com/learning/certificates/eaf6b3f31bc63b4c98cc0fd2258abd7e5c3b8dadf6f6f75517dd65f6c39d174a" target="_blank" class="w3-hover-text-white">
-        Microservices Fundation | LinkedIn
-      </a>
-    </p>
-    <p>
-      <i class="fa fa-certificate w3-margin-right"></i>
-      <a href="https://www.linkedin.com/learning/certificates/713ac458c30c006caab111b378c3d420131ce72c23b5e1efc72e1725692dc76e" target="_blank" class="w3-hover-text-white">
-        Introduction to Web Design and Development | LinkedIn
-      </a>
-    </p>
-    <p>
-      <i class="fa fa-certificate w3-margin-right"></i>
-      <a href="https://www.linkedin.com/learning/certificates/b63fa0ec5d599cffb50b757a5fb1abc6bbbef1d85fc3a66d2d28d36098f8b921" target="_blank" class="w3-hover-text-white">
-        JavaScript: Patterns | LinkedIn
-      </a>
-    </p>
-    <p>
-      <i class="fa fa-certificate w3-margin-right"></i>
-      <a href="https://www.linkedin.com/learning/certificates/f5b238e3d9c1dbd0df8e7090e79823714b9f9917c097374e740891af696833d9" target="_blank" class="w3-hover-text-white">
-        JavaScript Essential Training | LinkedIn
-      </a>
-    </p>
-    <p>
-      <i class="fa fa-certificate w3-margin-right"></i>
-      <a href="https://www.linkedin.com/learning/certificates/5ae0c433aea04ad1c54cbec3a84c063d93fa1431952701f2caed2fd95c36c582" target="_blank" class="w3-hover-text-white">
-        Docker for Developers LinkedIn | LinkedIn
-      </a>
-    </p>
-    <p>
-      <i class="fa fa-certificate w3-margin-right"></i>
-      <a href="https://www.linkedin.com/learning/certificates/d324a9d7a5dadf62f0a6937ce7807ba95091693e5deb881e009f25eed71cb55e" target="_blank" class="w3-hover-text-white">
-        TensorFlow: Working with Images | LinkedIn
-      </a>
-    </p>
-    <p>
-      <i class="fa fa-certificate w3-margin-right"></i>
-      <a href="https://www.linkedin.com/learning/certificates/be12904436f888944fec0e40874f06fa59124e16383652512121e274cd146a4b" target="_blank" class="w3-hover-text-white">
-        Time Series Analysis and Forecasting with GPT-4o | LinkedIn
-      </a>
-    </p>
-  </div>
-
-  
-<!-- Footer. This section contains an ad for W3Schools Spaces. You can leave it to support us. -->
-<footer class="w3-content w3-padding-64 w3-text-grey w3-xlarge">
-  <a href="https://github.com/atiesmaeili" target="_blank">
-    <i class="fa fa-git w3-hover-opacity w3-margin-right"></i>
-  </a>
-  
-  <a href="https://www.linkedin.com/in/atieh-mohammadesmaeili/" target="_blank">
-    <i class="fa fa-linkedin w3-hover-opacity"></i>   
-  </a>
-</footer> 
-
-<!-- END PAGE CONTENT -->
-</div>
-
-<!--script src="/Users/atiemohammadesmaeili/Documents/Website/Intro/scripts/Javascript.js"></script-->
+</footer>
 
 <script>
+  // ---- Slideshow ----
+  const slides = [
+    { src: "IMG_0950.jpg",        cap: "Rosenmobtag @ BBZ – Augsburg – February 2026" },
+    { src: "IMG_1964.jpg",        cap: "Behsazan Mellat – Tehran – April 2021" },
+    { src: "b1.jpg",              cap: "B1SmartTV – Munich – August 2024" },
+    { src: "IMG_1969.jpg",        cap: "Behsazan Mellat – Tehran – May 2022" },
+    { src: "IMG_7423.jpg",        cap: "KontakTA BBZ – Augsburg – April 2025" },
+    { src: "IMG_5562.jpg",        cap: "ImpactAI BBZ – Berlin – October 2024" },
+    { src: "party.jpg",           cap: "BBZ – Augsburg – June 2025" },
+    { src: "veranstalltung.jpg",  cap: "BBZ – Augsburg – November 2024" },
+  ];
 
-  document.addEventListener("DOMContentLoaded", function () {
-  // --- Existing Nav Link Logic ---
-  const navLinks = document.querySelectorAll('.nav-link');
-  navLinks.forEach(function (link) {
-    link.addEventListener('click', function () {
-      navLinks.forEach(innerLink => innerLink.classList.remove('active'));
-      link.classList.add('active');
-    });
+  let idx = 0;
+  const imgEl  = document.getElementById("slideshow");
+  const capEl  = document.getElementById("hero-caption");
+  const dotsEl = document.getElementById("slide-dots");
+
+  slides.forEach((_, i) => {
+    const d = document.createElement("div");
+    d.className = "dot" + (i === 0 ? " active" : "");
+    dotsEl.appendChild(d);
   });
 
-  // --- New Slideshow Logic ---
-  const images = [
-    "IMG_1964.jpg", 
-    "b1.jpg",
-    "IMG_1969.jpg",
-    "IMG_7423.jpg",
-    "IMG_5562.jpg",
-    "party.jpg",
-    "veranstalltung.jpg",
-  ];
-
-  // Make sure the order of captions matches the order of your images!
-  const captions = [
-    "Behsazan Mellat - Tehran - April 2021",
-    "B1SmartTV - Munich - August 2024",
-    "Behsazan Mellat - Tehran - May 2022",
-    "KontakTA BBZ - Augsburg - April 2025",
-    "ImpactAI BBZ - Berlin - October 2024",
-    "BBZ - Augsburg - June 2025",
-    "BBZ - Augsburg - November 2024"
-  ];
-  
-  let currentIndex = 0;
-  const slideElement = document.getElementById("slideshow");
-  const captionElement = document.getElementById("slideshow-caption");
-
-  function changeImage() {
-    currentIndex++;
-    if (currentIndex >= images.length) {
-      currentIndex = 0;
-    }
-    
-    // Reset animations for a smooth transition
-    slideElement.classList.remove("w3-animate-opacity");
-    captionElement.classList.remove("w3-animate-opacity");
-    
-    // Update Source and Text
-    slideElement.src = images[currentIndex];
-    captionElement.innerText = captions[currentIndex];
-    
-    // Trigger animation reset
-    void slideElement.offsetWidth; 
-    slideElement.classList.add("w3-animate-opacity");
-    captionElement.classList.add("w3-animate-opacity");
+  function updateDots() {
+    dotsEl.querySelectorAll(".dot").forEach((d, i) =>
+      d.classList.toggle("active", i === idx)
+    );
   }
 
-  setInterval(changeImage, 3000);
-});
-</script>
+  imgEl.style.transition = "opacity 0.45s ease";
 
+  function nextSlide() {
+    idx = (idx + 1) % slides.length;
+    imgEl.style.opacity = "0";
+    setTimeout(() => {
+      imgEl.src = slides[idx].src;
+      capEl.textContent = slides[idx].cap;
+      imgEl.style.opacity = "1";
+      updateDots();
+    }, 450);
+  }
+
+  setInterval(nextSlide, 4000);
+
+  // ---- Scroll-spy ----
+  const allNavItems = document.querySelectorAll(".nav-item, .mob-item");
+
+  const spyObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        allNavItems.forEach(n =>
+          n.classList.toggle("active", n.getAttribute("href") === "#" + id)
+        );
+      }
+    });
+  }, { threshold: 0.35 });
+
+  document.querySelectorAll("section[id]").forEach(s => spyObserver.observe(s));
+
+  // ---- Fade-in ----
+  const fiObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add("on");
+        fiObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll(".fi").forEach(el => fiObserver.observe(el));
+</script>
 
 </body>
 </html>
